@@ -1,58 +1,59 @@
-var bullet;
-var wall;
-var speed;
-var weight;
-var damage;
-var thickness;
-
-function setup() {
-  createCanvas(1600,400);
-speed = random (223,321);
-weight = random (30,52);
-
-thickness = random (22,83);
-
-bullet = createSprite (50,200,50,5);
-bullet.velocityX = speed;
-bullet.shapeColor = "white";
-
-wall = createSprite (1200,200,thickness,height/2);
-wall.shapeColor = (80,80,80);
+var canvas;
+var music;
+var red;
+var blue;
+var green;
+var yellow;
+var box;
+var edges
+function preload(){
+    music = loadSound("music.mp3");
+}
 
 
-
+function setup(){
+    canvas = createCanvas(800,600);
+    
+    //create 4 different surfaces
+    red = createSprite (50, 550, 220, 40);
+    blue = createSprite (250, 550, 220, 40);
+    yellow = createSprite (500,550, 220, 40);
+    green = createSprite (750,550, 220, 40);
+    box = createSprite (200, 400, 20, 20);
+    box.velocityX = 4;
+    box.velocityY = -2;
+    //create box sprite and give velocity
+    red.shapeColor = "red";
+    blue.shapeColor = "blue";
+    yellow.shapeColor = "yellow";
+    green.shapeColor = "green";
+    
 }
 
 function draw() {
-  background("gray");  
-  
-if(isTouching(bullet,wall)){
-   bullet.velocityX = 0;
-   var damage = (0.5 * weight * speed * speed)/ (thickness * thickness * thickness);
-
-          if(damage < 10){
-          wall.shapeColor = "green";
-        }
-
-          if(damage>10 || damage === 10){
-          wall.shapeColor = "red";
-        }
+    background ("lightblue");
+    //create edgeSprite
+    var edges = createEdgeSprites();
     
+   box.bounceOff(edges);
     
-        }
- 
-  drawSprites();
+    if(box.isTouching(red)){
+        box.bounceOff(red);
+        box.shapeColor = "red";
+    }
+    if(box.isTouching(blue)){
+        box.bounceOff(blue);
+        box.shapeColor = "blue";
+    }
+    if(box.isTouching(yellow)){
+        box.bounceOff(yellow);
+        box.shapeColor = "yellow";
+    }
+    if(box.isTouching(green)){
+        box.bounceOff(green);
+        box.shapeColor = "green";
+    }
+drawSprites();
+    //add condition to check if box touching surface and make it box
 }
 
-function isTouching(object1,object2){
-  if (object1.x - object2.x < object2.width/2 + object1.width/2
-    && object2.x - object1.x < object2.width/2 + object1.width/2
-    && object1.y - object2.y < object2.height/2 + object1.height/2
-    && object2.y - object1.y < object2.height/2 + object1.height/2) {
-  //making the function return a boolean value
-      return true;
-}
-else {
-  return false;
-}
-}
